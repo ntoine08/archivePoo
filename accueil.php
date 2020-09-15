@@ -4,7 +4,9 @@ session_start();
 if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 {
 
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -39,12 +41,7 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     </ul>
 
     <?php
- // After submitting the form we do not yet have the cookie set, but we can learn desired color from form submission
-//  if ($_COOKIE["color"] || $_GET['color'])
-//    $bgcolor=$_COOKIE["color"] ? $_COOKIE["color"] : $_GET['color'];
-//  else
-//    $bgcolor="FFFBFB";
-//  echo "<body bgcolor='$bgcolor'>";
+ 
 
 if(!isset($_COOKIE['bg'])) {
     echo "
@@ -56,19 +53,7 @@ if(!isset($_COOKIE['bg'])) {
 ?>
 
     <?php
-//  if (!($_COOKIE["color"] || $_GET['color'])) {
-//    echo "We noticed you have not selected a background color. Please select from one of the options below.<p>";
-//    echo "
-// <form>
-//   Background Color<p>
 
-// <input type='radio' name='color' value='pink'><font color='pink'>pink</font><p>
-// <input type='radio' name='color' value='lightblue'><font color='lightblue'>light blue</font><p>
-// <input type='radio' name='color' value='lightgreen'><font color='lightgreen'>light green</font><p>
-// <input type='submit'>
-// </form>
-//   ";
-//  }
  
  ?>
     <h1>Archive Dep08</h1>
@@ -78,7 +63,7 @@ if(!isset($_COOKIE['bg'])) {
             <!-- ajouter personne-->
             <h2>Ajouter Personne</h2>
 
-            <form method="post" action="function/add-person.php">
+            <form method="post" action="controllers/form_personne.php">
                 <table class="t1">
                     <tr>
                         <td>nom</td>
