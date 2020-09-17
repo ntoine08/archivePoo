@@ -1,5 +1,8 @@
 
 <?php
+require_once('class/Database.php');
+$connexion = new Database('localhost', 'archivepoo', 'root', '');
+$bdd = $connexion->PDOConnexion();
 session_start();
 if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 {
@@ -26,13 +29,11 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 <body  class="<?php if(isset($_COOKIE['bg'])){
     echo $_COOKIE['bg'];};?>">
 
-    <?php
-            include 'function/connexion.php';
-        ?>
+    
     <ul class="index">
         <li><a href="accueil.php">Accueil</a></li>
         <li><a href="admin.php">Admin</a></li>
-        <li><a href="function/logout.php">Se déconnecter <?php
+        <li><a href="controllers/logout.php">Se déconnecter <?php
                             if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                             {
                                 echo $_SESSION['pseudo'];
@@ -104,13 +105,12 @@ if(!isset($_COOKIE['bg'])) {
             <!-- ajouter document-->
             <h2>Ajouter Document</h2>
 
-            <form method="post" action="function/add-doc.php">
+            <form method="post" action="controllers/add-doc.php">
                 <p>Sélectionner votre étagères</p>
                 <?php
                             $sql = "SELECT id_etagere, nomEtagere FROM etagere";
                             $statement = $bdd->prepare($sql);
                             $statement->execute();
-                            // var_dump($statement);
                         ?>
 
                 <select name="doc" id="doc_select">
@@ -119,6 +119,24 @@ if(!isset($_COOKIE['bg'])) {
                         <?php echo $row['id_etagere']; ?>
                         étagère nom :
                         <?php echo $row['nomEtagere']; ?>
+                    </option>
+                    <?php } ?>
+                </select>
+
+                <p>Sélectionner la personne</p>
+                <?php
+                            $sql = "SELECT id_personne, nomPersonne, prenomPersonne FROM personne";
+                            $statement = $bdd->prepare($sql);
+                            $statement->execute();
+                        ?>
+
+                <select name="pers" id="pers_select">
+                    <?php foreach ($statement as $row) { ?>
+                    <option value=" <?php echo $row['id_personne']; ?> ">
+                        <?php echo $row['id_personne']; ?>
+                        personne nom :
+                        <?php echo $row['nomPersonne']; ?>
+                        <?php echo $row['prenomPersonne']; ?>
                     </option>
                     <?php } ?>
                 </select>
@@ -139,10 +157,10 @@ if(!isset($_COOKIE['bg'])) {
             <!-- ajouter zone -->
             <h2>Ajouter Zone</h2>
 
-            <form method="post" action="function/add-zone.php">
+            <form method="post" action="controllers/add-zone.php">
                 <p>Sélectionner votre lieu de stockage</p>
                 <?php
-                        $sqls = "SELECT id_stockage, nomStockage FROM lieustockage";
+                        $sqls = "SELECT id_stockage, nomLieu FROM lieustockage";
                         $stockage = $bdd->prepare($sqls);
                         $stockage->execute();
                             
@@ -153,7 +171,7 @@ if(!isset($_COOKIE['bg'])) {
                     <option value=" <?php echo $rows['id_stockage']; ?> ">
                         <?php echo $rows['id_stockage']; ?>
                         Stockage nom :
-                        <?php echo $rows['nomStockage']; ?>
+                        <?php echo $rows['nomLieu']; ?>
                     </option>
                     <?php } ?>
                 </select>
@@ -170,7 +188,7 @@ if(!isset($_COOKIE['bg'])) {
             <!--ajouter etagere-->
             <h2>Ajouter Etagère</h2>
 
-            <form method="post" action="function/add-etagere.php">
+            <form method="post" action="controllers/add-etagere.php">
                 <p>Sélectionner votre zone</p>
                 <?php
                     $sql = "SELECT id_zone, nomZone FROM zone";

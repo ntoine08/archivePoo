@@ -1,3 +1,8 @@
+<?php
+require_once('class/Database.php');
+$connexion = new Database('localhost', 'archivepoo', 'root', '');
+$bdd = $connexion->PDOConnexion();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -11,15 +16,10 @@
 </head>
 
 <body>
-    <?php
-            include 'function/connexion.php';
-
-            
-        ?>
 
     <div class="conn">
         <h1>Connexion</h1>
-            <form class="login-form" method="POST" action="function/login.php">
+            <form class="login-form" method="POST" action="controllers/login.php">
             <input type="text" placeholder="pseudo" id="pseudo1" name="pseudo1"/>
             <input type="password" placeholder="Mdp" id="pass1" name="pass1"/>
             <button>connexion</button>

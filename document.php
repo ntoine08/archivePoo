@@ -32,16 +32,20 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                     <tr>
                         <th>Nom du document</th>
                         <th>Nom de l'étagère</th>
+                        <th>Nom de la personne</th>
+                        <th>Prénom de la personne</th>
                     </tr>
         
         
         <?php
             include 'function/connexion.php';  
              
-            $sel = $bdd->query('SELECT nomDocument, nomEtagere 
+            $sel = $bdd->query('SELECT nomDocument, nomEtagere, nomPersonne, prenomPersonne
                                 FROM document 
-                                LEFT JOIN etagere 
+                                LEFT JOIN etagere
                                 ON document.id_etagere = etagere.id_etagere 
+                                LEFT JOIN personne
+                                ON document.id_personne = personne.id_personne
                                 ORDER BY document.id_etagere');
             $documents = $sel->fetchAll();
             foreach($documents as $document){
@@ -49,6 +53,8 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                     <tr>
                         <td><?= $document['nomDocument'];?></td>
                         <td><?= $document['nomEtagere'];?></td>
+                        <td><?= $document['nomPersonne'];?></td>
+                        <td><?= $document['prenomPersonne'];?></td>
                     </tr>
                                   
         <?php

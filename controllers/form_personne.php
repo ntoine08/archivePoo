@@ -1,7 +1,9 @@
 <?php
+require_once('../class/Database.php');
 require_once('../class/personne.php');
 
-include '../function/connexion.php';
+$connexion = new Database('localhost', 'archivepoo', 'root', '');
+$bdd = $connexion->PDOConnexion();
 
 $nom = $_POST['nomPersonne'];
 $prenom = $_POST['prenomPersonne'];

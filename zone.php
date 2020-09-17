@@ -37,14 +37,14 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
         <?php
             include 'function/connexion.php';  
              
-            $sel = $bdd->query('SELECT nomZone, nomStockage FROM zone 
+            $sel = $bdd->query('SELECT nomZone, nomLieu FROM zone 
             LEFT JOIN lieustockage ON zone.id_stockage = lieustockage.id_stockage ORDER BY zone.id_stockage');
             $zoness = $sel->fetchAll();
             foreach($zoness as $zone){
                 ?>
                 <tr>
                   <td><?= $zone['nomZone'];?></td>
-                  <td><?= $zone['nomStockage'];?></td>
+                  <td><?= $zone['nomLieu'];?></td>
                 </tr>
                                   
         <?php

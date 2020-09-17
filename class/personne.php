@@ -1,6 +1,6 @@
 <?php
 class Personne{
-
+    
     private $_nom;
     private $_prenom;
     private $_adresse;
@@ -18,7 +18,7 @@ class Personne{
         $this->_pseudo = $pseudo;
         $this->_mdp = $mdp;
     }
-
+    
     public function getNom() {
         return $this->_nom;
     }
@@ -75,6 +75,7 @@ class Personne{
         $this->_mdp = $mdp;
     }
 
+    //fonction pour crée une personne
     public function insertUser($bdd){
         $this->_nom;
         $this->_prenom;
@@ -96,6 +97,57 @@ class Personne{
         'mdp' => $this->_mdp,
         ));
         header("location:../accueil.php");
+    }
+
+    //fonction pour se connecter
+    public function login($bdd){
+        //  Récupération de l'utilisateur et du mot de passe
+        $req = $bdd->prepare('SELECT id_personne, mdp FROM personne WHERE pseudo = :pseudo');
+        $req->execute(array(
+            'pseudo' => $this->_pseudo));
+        $resultat = $req->fetch();
+
+        // Comparaison du pass envoyé via le formulaire avec la base
+        $isPasswordCorrect = password_verify($_POST['pass1'], $resultat['mdp']);
+
+        if (!$resultat)
+        {
+            echo 'Mauvais identifiant ou mot de passe !';
+        }
+        else
+        {
+            if ($isPasswordCorrect) {
+                session_start();
+                $_SESSION['id_personne'] = $resultat['id_personne'];
+                $_SESSION['pseudo'] = $this->_pseudo;
+                header("Location: ../accueil.php");
+            }
+            else {
+                echo 'Mauvais identifiant ou mot de passe !';
+                header("Location: ../index.php");
+            }
+        }
+    }
+
+    public function modifPersonne($bdd, $current_id){
+        
+        $bdd->query("UPDATE personne SET nomPersonne='$this->_nom',
+                                         prenomPersonne='$this->_prenom', 
+                                         adresse='$this->_adresse', 
+                                         mail='$this->_mail', 
+                                         telephone='$this->_telephone' 
+                     WHERE id_personne='$current_id'");
+
+            header('location:../admin.php');
+    }
+
+    public function deletePersonne($bdd, $current_id){
+
+        $bdd->query("UPDATE personne SET id_personne=NULL WHERE id_personne='$current_id'");
+        $bdd->query("DELETE FROM personne WHERE id_personne = '$current_id'");
+
+
+        header("location:../admin.php");        
     }
     
 }
