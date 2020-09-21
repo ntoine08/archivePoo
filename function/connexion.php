@@ -1,6 +1,4 @@
 <?php
-   
-
 try   {
 
   $user = "root";

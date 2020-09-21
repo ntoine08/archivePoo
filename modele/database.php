@@ -13,7 +13,7 @@ class Database{
         $this->_username = $_username;
         $this->_password = $_password;
     }
-
+    //getter et setter
     public function getHost() {
         return $this->_host;
     }

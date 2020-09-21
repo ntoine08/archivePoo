@@ -1,5 +1,12 @@
 <?php
+// j'appelle ma classe
+require_once('../modele/Database.php');
+// je crée ma connexion
+$connexion = new Database('localhost', 'archivepoo', 'root', '');
+$bdd = $connexion->PDOConnexion();
+// démarrer la session
 session_start();
+// vérifier si il y'a un personne connecter
 if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 {
 
@@ -10,7 +17,7 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
 
         <title>ARCHIVE</title>
     </head>
@@ -19,7 +26,8 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     <ul class="index">
         <li><a href="accueil.php">Accueil</a></li>
         <li><a href="admin.php">Admin</a></li>
-        <li><a href="function/logout.php">Se déconnecter <?php
+        <!-- relier le bouton déconnection au controller -->
+        <li><a href="../controllers/logout.php">Se déconnecter <?php
                             if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                             {
                                 echo $_SESSION['pseudo'];
@@ -28,18 +36,16 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     </ul>
 
     <h1>Liste des documents</h1>
+    <!-- tableau pour afficher les documents -->
     <table class="t2">
                     <tr>
                         <th>Nom du document</th>
                         <th>Nom de l'étagère</th>
                         <th>Nom de la personne</th>
                         <th>Prénom de la personne</th>
-                    </tr>
-        
-        
-        <?php
-            include 'function/connexion.php';  
-             
+                    </tr>  
+        <?php 
+            // requête sql pour afficher pour afficher les documents
             $sel = $bdd->query('SELECT nomDocument, nomEtagere, nomPersonne, prenomPersonne
                                 FROM document 
                                 LEFT JOIN etagere

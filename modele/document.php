@@ -1,15 +1,16 @@
 <?php
 class Document{
+    //variables de la class
     private $_nomDocument;
     private $_id_etagere;
     private $_id_personne;
-
+    //création du constructeur
     public function __construct($nomDocument, $id_etagere, $id_personne) {
         $this->_nomDocument = $nomDocument;
         $this->_id_etagere = $id_etagere;
         $this->_id_personne = $id_personne;
     }
-
+    // getter et setter
     public function getNomDocument() {
         return $this->_nomDocument;
     }
@@ -33,8 +34,9 @@ class Document{
     public function setId_personne($id_personne) {
         $this->_id_personne = $id_personne;
     }
-
+    // fonction pour crée les documents
     public function addDocument($bdd){
+        // requête sql pour crée les documents
         $req = $bdd->prepare('INSERT INTO document (nomDocument, id_etagere, id_personne) VALUES (:nomDocument, :id_etagere, :id_personne)');
         $req->execute(array(
             'nomDocument' => $this->_nomDocument,
@@ -42,7 +44,7 @@ class Document{
             'id_personne' => $this->_id_personne,
         ));
 
-        header("location:../accueil.php");
+        header("location:../viewers/accueil.php");
     }
 }
 ?>

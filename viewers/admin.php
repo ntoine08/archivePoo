@@ -1,9 +1,13 @@
 
 <?php
-require_once('class/Database.php');
+// j'appelle ma classe
+require_once('../modele/Database.php');
+// je crée ma connexion
 $connexion = new Database('localhost', 'archivepoo', 'root', '');
 $bdd = $connexion->PDOConnexion();
+// démarrer la session
 session_start();
+// vérifier si il y'a un personne connecter
 if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 {
 
@@ -15,13 +19,12 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>ARCHIVE</title>
 </head>
-
 
 <body  class="<?php if(isset($_COOKIE['bg'])){
     echo $_COOKIE['bg'];};?>">
@@ -29,7 +32,8 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     <ul class="index">
         <li><a href="accueil.php">Accueil</a></li>
         <li><a href="admin.php">Admin</a></li>
-        <li><a href="controllers/logout.php">Se déconnecter <?php
+        <!-- relier le bouton déconnection au controller -->
+        <li><a href="../controllers/logout.php">Se déconnecter <?php
                             if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                             {
                                 echo $_SESSION['pseudo'];
@@ -39,24 +43,24 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
 
     <?php
 
-
 if(!isset($_COOKIE['bg'])) {
     echo "
     <h3>choisir le fond d'ecran</h3>
-    <a  href='function/cookie.php?color=bg-success' class='btn btn-success'>VERT</a>
-    <a  href='function/cookie.php?color=bg-primary' class='btn btn-primary'>BLEU</a>
-    <a  href='function/cookie.php?color=bg-danger' class='btn btn-danger'>ROUGE</a>";
+    <a  href='../function/cookie.php?color=bg-success' class='btn btn-success'>VERT</a>
+    <a  href='../function/cookie.php?color=bg-primary' class='btn btn-primary'>BLEU</a>
+    <a  href='../function/cookie.php?color=bg-danger' class='btn btn-danger'>ROUGE</a>";
 };
 ?>
 
     <h1>AFFICHER</h1>
-    <?php
-
+        <?php
+        // requête sql pour afficher la liste des personnes dans l'ordre par id
             $sel = $bdd->query('SELECT id_personne, nomPersonne, prenomPersonne, adresse, mail, telephone FROM personne ORDER BY id_personne');
             $personnes=$sel->fetchAll();
             foreach($personnes as $personne){ ?>
             <div class="p3">
-                <form method="post" action="controllers/modif.php?id=<?= $personne['id_personne']; ?>">
+                <!-- formulaire pour modifier ou supprimer la personne relié au controller -->
+                <form method="post" action="../controllers/modif.php?id=<?= $personne['id_personne']; ?>">
                     <input type="text" name="nomPersonne" value="<?= $personne['nomPersonne']; ?>" placeholder="NOM">
                     <input type="text" name="prenomPersonne" value="<?= $personne['prenomPersonne']; ?>" placeholder="PRENOM">
                     <input type="text" name="adresse" value="<?= $personne['adresse']; ?>" placeholder="ADRESSE">
@@ -65,24 +69,23 @@ if(!isset($_COOKIE['bg'])) {
                     <button type="submit">Envoyer</button>
                 </form>
 
-                    <a href="controllers/delete.php?id=<?= $personne['id_personne'] ?>">supprimer</a>
+                    <a href="../controllers/delete.php?id=<?= $personne['id_personne'] ?>">supprimer</a>
                     
             </div>
           <?php  }; ?>
     
-
-
     <!--ajouter des affectations-->
     <h1>Ajouter affectations</h1>
         <div class="p2">
-
-            <form method="post" action="controllers/add-affectation.php">
+            <!-- formulaire pour crée les affectations relié au controller -->
+            <form method="post" action="../controllers/add-affectation.php">
                 <?php
-                            $sql = "SELECT id_personne, nomPersonne, prenomPersonne FROM personne";
-                            $perso = $bdd->prepare($sql);
-                            $perso->execute();
+                    //requête sql pour afficher toute les personnes dans le menu déroulant
+                    $sql = "SELECT id_personne, nomPersonne, prenomPersonne FROM personne";
+                    $perso = $bdd->prepare($sql);
+                    $perso->execute();
                             
-                        ?>
+                ?>
 
                 <p>Nom de la personne :</p>
                 <select name="perso" id="perso_select">
@@ -100,6 +103,7 @@ if(!isset($_COOKIE['bg'])) {
 
 
                 <?php
+                    //requête sql pour afficher tute les zones dans le menu déroulant
                     $sqls = "SELECT id_zone, nomZone FROM zone";
                     $zon = $bdd->prepare($sqls);
                     $zon->execute();
@@ -125,7 +129,7 @@ if(!isset($_COOKIE['bg'])) {
     <!--afficher les affectations-->
 
     <h1>Liste des affectations</h1>
-
+    <!-- tableau pour afficher toute les affectations -->
     <table class="t2">
         <tr>
             <th>Nom de la personne</th>
@@ -134,18 +138,20 @@ if(!isset($_COOKIE['bg'])) {
             <th></th>
         </tr>
         <?php
-     
-    $tab = $bdd->query('SELECT gerer.id_personne, nomPersonne, prenomPersonne, nomZone FROM gerer
-                        JOIN personne on personne.id_personne = gerer.id_personne 
-                        JOIN zone on zone.id_zone = gerer.id_zone');
-    $aff = $tab->fetchAll();
-    foreach($aff as $af){
+        // requête sql pour afficher toute les affectations
+            $tab = $bdd->query('SELECT gerer.id_personne, nomPersonne, prenomPersonne, nomZone 
+                                FROM gerer
+                                JOIN personne on personne.id_personne = gerer.id_personne 
+                                JOIN zone on zone.id_zone = gerer.id_zone');
+            $aff = $tab->fetchAll();
+            foreach($aff as $af){
         ?>
         <tr>
             <td><?= $af['nomPersonne'];?></td>
             <td><?= $af['prenomPersonne'];?></td>
             <td><?= $af['nomZone'];?></td>
-            <td><a href="controllers/delete-affectation.php?id_personne=<?= $af['id_personne']; ?>">supprimer</a></td>
+            <!-- bouton pour supprimer les affectations, relié au controller -->
+            <td><a href="../controllers/delete-affectation.php?id_personne=<?= $af['id_personne']; ?>">supprimer</a></td>
         </tr>
 
         <?php

@@ -1,6 +1,6 @@
 <?php
 class Personne{
-    
+    //variables de la class
     private $_nom;
     private $_prenom;
     private $_adresse;
@@ -8,7 +8,7 @@ class Personne{
     private $_telephone;
     private $_pseudo;
     private $_mdp;
-
+    //création du constructeur
     public function __construct($nom, $prenom, $adresse, $mail, $telephone, $pseudo, $mdp) {
         $this->_nom = $nom;
         $this->_prenom = $prenom;
@@ -18,7 +18,7 @@ class Personne{
         $this->_pseudo = $pseudo;
         $this->_mdp = $mdp;
     }
-    
+    // getter et setter
     public function getNom() {
         return $this->_nom;
     }
@@ -83,8 +83,8 @@ class Personne{
         $this->_mail;
         $this->_telephone;
         $this->_pseudo;
-        $this->_mdp = password_hash($this->_mdp, PASSWORD_BCRYPT);
-
+        $this->_mdp = password_hash($this->_mdp, PASSWORD_BCRYPT);// pour hashé le mot de passe
+        // requête sql pour crée la personne
         $req = $bdd->prepare('INSERT INTO personne (nomPersonne, prenomPersonne, adresse, mail, telephone, pseudo, mdp) 
                             VALUES (:nomPersonne, :prenomPersonne, :adresse, :mail, :telephone, :pseudo, :mdp)');
         $req->execute(array(
@@ -96,7 +96,7 @@ class Personne{
         'pseudo' => $this->_pseudo,
         'mdp' => $this->_mdp,
         ));
-        header("location:../accueil.php");
+        header("location:../viewers/accueil.php");
     }
 
     //fonction pour se connecter
@@ -120,7 +120,7 @@ class Personne{
                 session_start();
                 $_SESSION['id_personne'] = $resultat['id_personne'];
                 $_SESSION['pseudo'] = $this->_pseudo;
-                header("Location: ../accueil.php");
+                header("Location: ../viewers/accueil.php");
             }
             else {
                 echo 'Mauvais identifiant ou mot de passe !';
@@ -128,9 +128,9 @@ class Personne{
             }
         }
     }
-
+    // fonction pour modifier la personne
     public function modifPersonne($bdd, $current_id){
-        
+        // requête sql pour modifier la personne
         $bdd->query("UPDATE personne SET nomPersonne='$this->_nom',
                                          prenomPersonne='$this->_prenom', 
                                          adresse='$this->_adresse', 
@@ -138,17 +138,16 @@ class Personne{
                                          telephone='$this->_telephone' 
                      WHERE id_personne='$current_id'");
 
-            header('location:../admin.php');
+            header('location:../viewers/admin.php');
     }
-
+    // fonction pour supprimer la personne
     public function deletePersonne($bdd, $current_id){
-
+        // requête sql pour récupéré l'id de la personne puis la supprimer
         $bdd->query("UPDATE personne SET id_personne=NULL WHERE id_personne='$current_id'");
         $bdd->query("DELETE FROM personne WHERE id_personne = '$current_id'");
 
 
-        header("location:../admin.php");        
-    }
-    
+        header("location:../viewers/admin.php");        
+    }    
 }
 ?>
