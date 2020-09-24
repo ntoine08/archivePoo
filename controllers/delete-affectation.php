@@ -13,5 +13,4 @@ $id = intval($recupereID);
 $etagere = new Gerer($id, null);
 //j'appelle ma fonction
 $etagere -> deleteAffectation($bdd, $id);
-
 ?>

@@ -1,6 +1,6 @@
 <?php
 // j'appelle ma classe
-require_once('../modeles/Database.php');
+require_once('../modele/Database.php');
 // je crée ma connexion
 $connexion = new Database('localhost', 'archivepoo', 'root', '');
 $bdd = $connexion->PDOConnexion();

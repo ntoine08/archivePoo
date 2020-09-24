@@ -46,7 +46,7 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                         <th>Téléphone</th>
                     </tr>
         <?php
-            // requête sql pour afficher pour afficher les personnes
+            // requête sql pour afficher les personnes
             $sel = $bdd->query('SELECT * FROM personne');
             $personnes=$sel->fetchAll();
             foreach($personnes as $personne){

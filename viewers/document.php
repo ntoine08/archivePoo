@@ -45,7 +45,7 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
                         <th>Prénom de la personne</th>
                     </tr>  
         <?php 
-            // requête sql pour afficher pour afficher les documents
+            // requête sql pour afficher les documents
             $sel = $bdd->query('SELECT nomDocument, nomEtagere, nomPersonne, prenomPersonne
                                 FROM document 
                                 LEFT JOIN etagere

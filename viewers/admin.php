@@ -55,7 +55,9 @@ if(!isset($_COOKIE['bg'])) {
     <h1>AFFICHER</h1>
         <?php
         // requête sql pour afficher la liste des personnes dans l'ordre par id
-            $sel = $bdd->query('SELECT id_personne, nomPersonne, prenomPersonne, adresse, mail, telephone FROM personne ORDER BY id_personne');
+            $sel = $bdd->query('SELECT id_personne, nomPersonne, prenomPersonne, adresse, mail, telephone 
+                                FROM personne 
+                                ORDER BY id_personne');
             $personnes=$sel->fetchAll();
             foreach($personnes as $personne){ ?>
             <div class="p3">
@@ -83,10 +85,8 @@ if(!isset($_COOKIE['bg'])) {
                     //requête sql pour afficher toute les personnes dans le menu déroulant
                     $sql = "SELECT id_personne, nomPersonne, prenomPersonne FROM personne";
                     $perso = $bdd->prepare($sql);
-                    $perso->execute();
-                            
+                    $perso->execute();           
                 ?>
-
                 <p>Nom de la personne :</p>
                 <select name="perso" id="perso_select">
 
@@ -101,13 +101,11 @@ if(!isset($_COOKIE['bg'])) {
                     <?php } ?>
                 </select>
 
-
                 <?php
                     //requête sql pour afficher tute les zones dans le menu déroulant
                     $sqls = "SELECT id_zone, nomZone FROM zone";
                     $zon = $bdd->prepare($sqls);
-                    $zon->execute();
-                            
+                    $zon->execute();                    
                 ?>
                 <p>nom de la zone :</p>
                 <select name="zon" id="zon_select">
@@ -121,7 +119,6 @@ if(!isset($_COOKIE['bg'])) {
                     </option>
                     <?php } ?>
                 </select>
-
                 <button type="submit">Envoyer</button>
             </form>
         </div>
@@ -153,11 +150,9 @@ if(!isset($_COOKIE['bg'])) {
             <!-- bouton pour supprimer les affectations, relié au controller -->
             <td><a href="../controllers/delete-affectation.php?id_personne=<?= $af['id_personne']; ?>">supprimer</a></td>
         </tr>
-
         <?php
-    };
-?>
-
+        };
+        ?>
     </table>
 
 </body>

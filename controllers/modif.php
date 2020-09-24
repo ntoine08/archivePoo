@@ -17,5 +17,4 @@ $telephone=$_POST["telephone"];
 $modif = new Personne($nom ,$prenom ,$adresse , $mail, $telephone, null, null);
 //j'appelle ma fonction
 $modif -> modifPersonne($bdd, $current_id);
-
 ?>

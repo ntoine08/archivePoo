@@ -42,7 +42,7 @@ if (isset($_SESSION['id_personne']) AND isset($_SESSION['pseudo']))
     </ul>
 
     <?php
- // choisir le fond d'écranavec le cookie
+ // choisir le fond d'écran avec le cookie
 if(!isset($_COOKIE['bg'])) {
     echo "
     <h3>choisir le fond d'ecran</h3>
